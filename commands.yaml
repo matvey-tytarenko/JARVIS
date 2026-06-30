@@ -29,7 +29,7 @@ commands:
   выключи компьютер:
     action: shutdown
 
-  перезагрузи:
+  перезагрузи компьютер:
     action: restart
 
   спящий режим:
@@ -40,3 +40,9 @@ commands:
 
   который час:
     action: time
+
+  включи музыку:
+    action: music
+
+  пауза:
+    action: pause

@@ -5,17 +5,20 @@ import pyttsx3
 from datetime import datetime
 import speech_recognition as sr
 from groq import Groq
+
+import jv
 from voice import speak
 import yaml
 import webbrowser
 import subprocess
 import os
 from jv import play_sound
+import time
 
 # Jarvis Start
 play_sound(r"voices\Джарвис - приветствие.wav")
 
-wake_word = 'джарвис'
+wake_words = ('джарвис', 'джар', 'джа')
 
 # Commands load
 with open("commands.yaml", 'r', encoding='utf-8') as f:
@@ -39,35 +42,61 @@ def listen(timeout=10, limit=10) -> str:
     return rec.recognize_google(audio, language='ru-RU')
 
 # Do Commands
-command = True
-def run_action(action: str) -> str:
+def run_action(action: str) -> bool:
     random_sound = random.choice(sounds)
+    youtube_path = r'"C:\Program Files (x86)\Microsoft\Edge\Application\msedge_proxy.exe" --profile-directory=Default --app-id=agimnkijcaahngcdmfeangaknmldooml --app-url=https://www.youtube.com/?feature=ytca --app-launch-source=4'
+    music_path = r'"C:\Program Files (x86)\Microsoft\Edge\Application\msedge_proxy.exe" --profile-directory=Default --app-id=cinhimbnkkaeohfgghhklpknlkffjgod --app-url=https://music.youtube.com/?source=pwa --app-launch-source=4'
+
     if action == "open_browser":
         play_sound(random_sound)
         webbrowser.open("https://www.google.com")
-        return command
+        return True
+
     elif action == "close_browser":
         play_sound(random_sound)
         os.system("taskkill /f /im firefox.exe")
         os.system("taskkill /f /im msedge.exe")
-        return command
+        return True
+
     elif action == "open_youtube":
-        pg.hotkey("winleft")
-        pg.write("Youtube", 0)
-        pg.hotkey("enter")
-        return command
+        play_sound(random_sound)
+        os.system(youtube_path)
+        return True
+
     elif action == "open_vscode":
         play_sound(r"voices\Мы работаем над проектом сэр 2.wav")
         os.system("code")
-        return command
+        return True
+
     elif action == "open_explorer":
         play_sound(random_sound)
         os.system("explorer")
-        return command
+        return True
+
     elif action == "time":
         now = datetime.now()
         speak(f"Cейчас {now.hour} часов {now.minute} минут")
-        return command
+        return True
+
+    elif action == "music":
+        play_sound(random_sound)
+        os.system(music_path)
+        time.sleep(6)
+        pg.press("space")
+        return True
+
+    elif action == "pause":
+        play_sound(random_sound)
+        pg.press("space")
+        return True
+    elif action == "restart":
+        play_sound(r"voices\Отключаю питание, начинаю диагностику системы.wav")
+        os.system("shutdown /r /t 0")
+        return True
+    elif action == "shutdown":
+        play_sound(r"voices\Отключаю питание, начинаю диагностику системы.wav")
+        os.system("shutdown /s /t 0")
+        return True
 
     return False
 
@@ -97,7 +126,7 @@ def ask_ai(text: str) -> str:
     return answer
 
 # Главный цикл
-print(f"Голосовой помощник запущен. Скажите '{wake_word}' для активации.")
+print(f"Голосовой помощник запущен. Скажите 'Джарвис' для активации.")
 
 while True:
     try:
@@ -106,7 +135,7 @@ while True:
         wake_text = listen(timeout=10, limit=4).lower()
         print(f"Услышал: {wake_text}")
 
-        if wake_word not in wake_text:
+        if not any(w in wake_text for w in wake_words):
             continue
 
         # Wake word услышан

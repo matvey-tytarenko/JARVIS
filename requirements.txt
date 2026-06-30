@@ -1,0 +1,9 @@
+PyAutoGui
+Pyttsx3
+datetime
+speechrecognition
+groq
+pygame
+silero
+sounddevice
+num2words
