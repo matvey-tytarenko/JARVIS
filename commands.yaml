@@ -1,0 +1,36 @@
+commands:
+  открой браузер:
+    action: open_browser
+
+  закрой браузер:
+    action: close_browser
+
+  открой ютуб:
+    action: open_youtube
+
+  открой youtube:
+    action: open_youtube
+
+  открой телеграм:
+    action: open_telegram
+
+  за роботу:
+    action: open_vscode
+
+  открой проводник:
+    action: open_explorer
+
+  громче:
+    action: volume_up
+
+  тише:
+    action: volume_down
+
+  выключи компьютер:
+    action: shutdown
+
+  перезагрузи:
+    action: restart
+
+  спящий режим:
+    action: sleep
