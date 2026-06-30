@@ -14,7 +14,7 @@ commands:
   открой телеграм:
     action: open_telegram
 
-  за роботу:
+  за работу:
     action: open_vscode
 
   открой проводник:
@@ -34,3 +34,9 @@ commands:
 
   спящий режим:
     action: sleep
+
+  сколько времмени:
+      action: time
+
+  который час:
+    action: time

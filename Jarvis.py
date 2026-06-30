@@ -1,7 +1,8 @@
 import random
-
+import pyautogui as pg
 import config
 import pyttsx3
+from datetime import datetime
 import speech_recognition as sr
 from groq import Groq
 from voice import speak
@@ -38,23 +39,37 @@ def listen(timeout=10, limit=10) -> str:
     return rec.recognize_google(audio, language='ru-RU')
 
 # Do Commands
+command = True
 def run_action(action: str) -> str:
     random_sound = random.choice(sounds)
     if action == "open_browser":
         play_sound(random_sound)
         webbrowser.open("https://www.google.com")
+        return command
     elif action == "close_browser":
         play_sound(random_sound)
         os.system("taskkill /f /im firefox.exe")
         os.system("taskkill /f /im msedge.exe")
+        return command
     elif action == "open_youtube":
-        pass
+        pg.hotkey("winleft")
+        pg.write("Youtube", 0)
+        pg.hotkey("enter")
+        return command
     elif action == "open_vscode":
-        play_sound(random_sound)
+        play_sound(r"voices\Мы работаем над проектом сэр 2.wav")
         os.system("code")
+        return command
     elif action == "open_explorer":
         play_sound(random_sound)
         os.system("explorer")
+        return command
+    elif action == "time":
+        now = datetime.now()
+        speak(f"Cейчас {now.hour} часов {now.minute} минут")
+        return command
+
+    return False
 
 def handle_command(text: str):
     text = text.lower()
